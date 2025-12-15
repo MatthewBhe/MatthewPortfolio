@@ -22,7 +22,6 @@ let recaptchaPoll = null
 
 function renderRecaptcha() {
   if (!siteKey) {
-    console.warn('VITE_RECAPTCHA_SITE_KEY manquante — active le captcha pour un meilleur anti-spam.')
     return
   }
   if (recaptchaWidgetId !== null) return
@@ -141,7 +140,6 @@ async function sendEmail() {
       window.grecaptcha.reset(recaptchaWidgetId)
     }
   } catch (e) {
-    console.error(e)
     err.value = "Échec de l’envoi. Réessayez plus tard."
   } finally {
     sending.value = false

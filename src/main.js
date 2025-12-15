@@ -1,12 +1,24 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import './styles.css'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+import { i18n } from './i18n'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.use(i18n)           
+app.mount('#app')       
+
+AOS.init({
+  duration: 500,
+  easing: 'ease-out',
+  once: true,
+  mirror: true
+})
 
 // ---- Enhanced scroll reveal & mouse glow ----
 function initEnhancements() {
-  // Reveal au scroll
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (e.isIntersecting) {
@@ -21,7 +33,6 @@ function initEnhancements() {
     io.observe(el)
   })
 
-  // Glow souris (rAF throttle)
   let ticking = false
   function onMove(evt) {
     if (ticking) return

@@ -1,46 +1,50 @@
-<script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue"
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue"
+import { useI18n } from "vue-i18n"
 
+const { t, locale } = useI18n()
 
-const projects = [
+// Données "tech" (ne dépendent pas de la langue)
+const baseProjects = [
   {
-    title: "Analyseur syntaxique",
-    desc: "Interpréteur d’expressions ensemblistes avec Flex et Bison : union, intersection, complément, cardinalité, copie et gestion des doublons. Analyse, exécute et affiche les résultats des expressions utilisateur.",
     img: "/assets/parser.webp",
     link: "https://github.com/MatthewBhe/THL-Final-Project"
   },
   {
-    title: "Tower of Hero",
-    desc: "Jeu de plateforme 2D en Java (Swing). Améliorez vos héros et gravissez un maximum d’étages en battant les monstres de chaque niveau.",
     img: "/assets/tower-of-hero.webp",
     link: "https://github.com/MatthewBhe/Java-Final-Project"
   },
   {
-    title: "Ninja Spectral",
-    desc: "Jeu mobile Android publié sur le Play Store. Reproduction d’un niveau de Mario : traversez la carte d’une traite sans mourir pour finir le niveau.",
     img: "/assets/ninja-spectral.webp",
     link: ""
   }
 ]
 
+// Données affichées (dépendent de la langue) -> computed
+const projects = computed(() =>
+  baseProjects.map((p, i) => ({
+    ...p,
+    title: t(`projects.items.${i}.title`),
+    desc: t(`projects.items.${i}.desc`)
+  }))
+)
 
-const base = projects
-const N = base.length
-const repeated = [...base, ...base, ...base] 
+const N = computed(() => projects.value.length)
+const repeated = computed(() => [...projects.value, ...projects.value, ...projects.value])
 
-const viewportRef = ref(null)
+const viewportRef = ref<HTMLElement | null>(null)
 const slideWidth = ref(0)
-const slidesPerView = ref(2) 
+const slidesPerView = ref(2)
 
 const duration = 450
-const current = ref(N)      
+const current = ref(0)
 const transitioning = ref(true)
 
 const isPointerDown = ref(false)
 const startX = ref(0)
 const startY = ref(0)
 const dragX = ref(0)
-const lockedClick = ref(false) 
+const lockedClick = ref(false)
 
 function measure() {
   if (!viewportRef.value) return
@@ -49,18 +53,19 @@ function measure() {
   slideWidth.value = viewportRef.value.clientWidth / slidesPerView.value
 }
 
-function go(delta) {
+function go(delta: number) {
   if (!slideWidth.value) measure()
   transitioning.value = true
   current.value += delta
 
   window.setTimeout(() => {
-    if (current.value >= 2 * N) {
+    const n = N.value
+    if (current.value >= 2 * n) {
       transitioning.value = false
-      current.value -= N
-    } else if (current.value < N) {
+      current.value -= n
+    } else if (current.value < n) {
       transitioning.value = false
-      current.value += N
+      current.value += n
     }
   }, duration + 20)
 }
@@ -68,27 +73,27 @@ function go(delta) {
 const next = () => go(1)
 const prev = () => go(-1)
 
-function onPointerDown(e) {
+function onPointerDown(e: any) {
   isPointerDown.value = true
   transitioning.value = false
   dragX.value = 0
   lockedClick.value = false
 
-  const p = 'touches' in e ? e.touches[0] : e
+  const p = "touches" in e ? e.touches[0] : e
   startX.value = p.clientX
   startY.value = p.clientY
 }
 
-function onPointerMove(e) {
+function onPointerMove(e: any) {
   if (!isPointerDown.value) return
-  const p = 'touches' in e ? e.touches[0] : e
+  const p = "touches" in e ? e.touches[0] : e
   const dx = p.clientX - startX.value
   const dy = p.clientY - startY.value
 
   if (Math.abs(dy) > Math.abs(dx) * 1.2) return
 
   dragX.value = dx
-  if (Math.abs(dx) > 8) lockedClick.value = true 
+  if (Math.abs(dx) > 8) lockedClick.value = true
 }
 
 function onPointerUpCancel() {
@@ -105,18 +110,33 @@ function onPointerUpCancel() {
   dragX.value = 0
 }
 
-function onSlideClick(ev) {
+function onSlideClick(ev: MouseEvent) {
   if (lockedClick.value) {
     ev.preventDefault()
     ev.stopPropagation()
   }
 }
 
+// Init : on démarre au milieu (N) quand N est connu
+function resetIndex() {
+  current.value = N.value
+  transitioning.value = true
+}
+
+// Si la langue change, on reset l’index (optionnel mais ça évite un “saut” visuel)
+watch(locale, () => {
+  resetIndex()
+})
+
 onMounted(() => {
   measure()
+  resetIndex()
+
   const ro = new ResizeObserver(measure)
-  ro.observe(viewportRef.value)
+  if (viewportRef.value) ro.observe(viewportRef.value)
+
   window.addEventListener("resize", measure)
+
   onBeforeUnmount(() => {
     ro.disconnect()
     window.removeEventListener("resize", measure)
@@ -128,17 +148,21 @@ onMounted(() => {
   <section id="projets" class="section relative" data-reveal>
     <div class="container">
       <div class="flex items-baseline justify-between mb-6">
-        <h2 class="text-2xl sm:text-3xl font-bold">Mes projets</h2>
-        <a href="https://github.com/MatthewBhe" target="_blank" class="text-sm hover:text-brand-accent">
-          Plus sur GitHub ↗
+        <h2 class="text-2xl sm:text-3xl font-bold">{{ t("projects.title") }}</h2>
+        <a
+          href="https://github.com/MatthewBhe"
+          target="_blank"
+          class="text-sm hover:text-brand-accent"
+        >
+          {{ t("projects.more") }}
         </a>
       </div>
 
       <div class="relative overflow-visible">
-                 <div class="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-[#101820] to-transparent z-[2]"></div>
+        <div class="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-[#101820] to-transparent z-[2]"></div>
         <div class="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#101820] to-transparent z-[2]"></div>
 
-                 <div
+        <div
           ref="viewportRef"
           class="overflow-hidden select-none"
           style="touch-action: pan-y;"
@@ -151,34 +175,39 @@ onMounted(() => {
           @touchend.passive="onPointerUpCancel"
           @touchcancel.passive="onPointerUpCancel"
         >
-                     <div
+          <div
             class="flex cursor-grab active:cursor-grabbing"
             :style="{
               transform: `translateX(${-(current - N) * slideWidth + dragX}px)`,
               transition: transitioning ? `transform ${duration}ms ease` : 'none'
             }"
           >
-                         <a
+            <a
               v-for="(p, i) in repeated"
               :key="i"
-              :href="p.link"
-              target="_blank"
+              :href="p.link || undefined"
+              :target="p.link ? '_blank' : undefined"
               class="group shrink-0 px-3 box-border"
+              :class="!p.link ? 'pointer-events-none opacity-95' : ''"
               :style="{ width: slideWidth + 'px' }"
               @click="onSlideClick"
             >
               <div class="card overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-accent/70">
                 <div class="relative">
-                  <img :src="p.img" :alt="p.title"
-                       class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+                  <img
+                    :src="p.img"
+                    :alt="p.title"
+                    class="h-56 w-full object-cover transition duration-500 group-hover:scale-105"
+                  >
                   <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/60 to-transparent"></div>
                 </div>
                 <div class="p-4">
                   <div class="flex items-center justify-between">
                     <h3 class="font-semibold">{{ p.title }}</h3>
                     <span
-                      class="px-3 py-1 rounded-full text-xs bg-brand-accent text-brand-dark font-medium opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition">
-                      Voir
+                      class="px-3 py-1 rounded-full text-xs bg-brand-accent text-brand-dark font-medium opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition"
+                    >
+                      {{ t("projects.view") }}
                     </span>
                   </div>
                   <p class="text-sm text-white/70 mt-2">{{ p.desc }}</p>
@@ -188,15 +217,14 @@ onMounted(() => {
           </div>
         </div>
 
-                 <button @click="prev" class="arrow-btn left-arrow" aria-label="Précédent">←</button>
-        <button @click="next" class="arrow-btn right-arrow" aria-label="Suivant">→</button>
+        <button @click="prev" class="arrow-btn left-arrow" :aria-label="t('projects.prev') || 'Précédent'">←</button>
+        <button @click="next" class="arrow-btn right-arrow" :aria-label="t('projects.next') || 'Suivant'">→</button>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-
 .arrow-btn {
   position: absolute;
   top: 50%;
@@ -216,7 +244,6 @@ onMounted(() => {
 }
 .left-arrow  { left: -3.5rem; }
 .right-arrow { right: -3.5rem; }
-
 
 .arrow-btn:hover {
   transform: translateY(-50%) scale(1.1);
@@ -238,7 +265,6 @@ onMounted(() => {
   mix-blend-mode: screen;
 }
 .arrow-btn:hover::after { transform: translateX(120%) skewX(-12deg); }
-
 
 @media (max-width: 640px) {
   .arrow-btn { height: 36px; width: 36px; }

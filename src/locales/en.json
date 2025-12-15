@@ -1,0 +1,55 @@
+{
+  "about": {
+    "title": "About me",
+    "p1": "My name is <span class=\"text-brand-accent font-semibold\">Matthew Bonhomme</span>, a developer passionate about web and mobile. Curious and driven, I care a lot about code quality and user experience.",
+    "p2": "With several projects built with <span class=\"text-brand-accent\">Java</span>, <span class=\"text-brand-accent\">Vue.js</span> and <span class=\"text-brand-accent\">Android</span>, I build modern, performant, tailor-made solutions.",
+    "p3": "My goal: combine <span class=\"italic\">creativity</span> and <span class=\"italic\">technical rigor</span> to design elegant, intuitive interfaces.",
+    "p4": "Always eager to learn, I thrive in environments where innovation and collaboration are central.",
+    "cards": {
+      "web": { "title": "Web", "subtitle": "Vue / Nuxt / Node" },
+      "mobile": { "title": "Mobile", "subtitle": "Android / Java" },
+      "quality": { "title": "Quality", "subtitle": "UX / Performance" }
+    },
+    "quote": "“Creating digital experiences that inspire and work flawlessly.”",
+    "cv": "View my CV"
+  },
+  "projects": {
+    "title": "My projects",
+    "more": "More on GitHub ↗",
+    "view": "View",
+    "items": [
+      {
+        "title": "Syntax analyzer",
+        "desc": "Set expression interpreter using Flex and Bison: union, intersection, complement, cardinality, copy and duplicate handling. Parses, executes, and displays user expressions."
+      },
+      {
+        "title": "Tower of Hero",
+        "desc": "2D platformer game in Java (Swing). Upgrade your heroes and climb as many floors as possible by defeating monsters on each level."
+      },
+      {
+        "title": "Ninja Spectral",
+        "desc": "Android mobile game published on the Play Store. Mario-like level reproduction: cross the map in one run without dying to finish the level."
+      }
+    ]
+  },
+  "hero": {
+    "subtitle": "Web development student, passionate about creative interfaces, user experience, and technical challenges. Naturally curious, I enjoy exploring new technologies and pushing my limits.",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "linkedinAria": "View my LinkedIn profile"
+  },
+  "nav": {
+    "name": "Matthew Bonhomme",
+    "skills": "Skills",
+    "projects": "Projects",
+    "about": "About",
+    "menuOpen": "Open menu",
+    "menu": "Menu",
+    "close": "Close",
+    "langFrAria": "Switch site to French",
+    "langEnAria": "Switch site to English"
+  },
+  "skills": {
+    "title": "My skills"
+  }
+}

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  overflow-x: hidden;
+}
+
 /* Sélection + scrollbars (optionnel) */
 html { scroll-behavior: smooth; }
 ::selection { background: #9B5CFF; color: #101820; }
@@ -102,3 +106,31 @@ body { font-family: "Roboto Flex", ui-sans-serif, system-ui, -apple-system, Sego
     transform: translateX(120%) rotate(15deg);
   }
 }
+
+/* === Fix AOS scroll overflow === */
+
+html, body, #app {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip; /* mieux que hidden quand dispo */
+}
+
+.some-bg { width: 100%; left: 0; right: 0; }
+
+[data-hero],
+[data-aos] {
+  overflow: visible;
+  overflow-anchor: none;
+  will-change: transform, opacity;
+}
+
+.aos-init[data-aos="fade-up"]    { transform: translate3d(0, 24px, 0); }
+.aos-init[data-aos="fade-down"]  { transform: translate3d(0,-24px, 0); }
+.aos-init[data-aos="fade-right"] { transform: translate3d(24px, 0, 0); }
+.aos-init[data-aos="fade-left"]  { transform: translate3d(-24px, 0, 0); }
+.aos-init[data-aos="zoom-in"]    { transform: scale(0.98); }
+
+html {
+  scrollbar-gutter: stable both-edges;
+}
+

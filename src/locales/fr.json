@@ -1,0 +1,55 @@
+{
+  "about": {
+    "title": "À propos de moi",
+    "p1": "Je m'appelle <span class=\"text-brand-accent font-semibold\">Matthew Bonhomme</span>, développeur passionné dans le web et le mobile. Curieux et déterminé, j’attache une grande importance à la qualité du code et à l’expérience utilisateur.",
+    "p2": "Fort de plusieurs projets réalisés en <span class=\"text-brand-accent\">Java</span>, <span class=\"text-brand-accent\">Vue.js</span> et <span class=\"text-brand-accent\">Android</span>, je développe des solutions modernes, performantes et sur mesure.",
+    "p3": "Mon objectif : allier <span class=\"italic\">créativité</span> et <span class=\"italic\">rigueur technique</span> pour concevoir des interfaces élégantes et intuitives.",
+    "p4": "Toujours avide d’apprendre, j’évolue dans un environnement où l’innovation et la collaboration sont au cœur de ma démarche.",
+    "cards": {
+      "web": { "title": "Web", "subtitle": "Vue / Nuxt / Node" },
+      "mobile": { "title": "Mobile", "subtitle": "Android / Java" },
+      "quality": { "title": "Qualité", "subtitle": "UX / Performance" }
+    },
+    "quote": "“Créer des expériences numériques qui inspirent et fonctionnent parfaitement.”",
+    "cv": "Voir mon CV"
+  },
+  "projects": {
+    "title": "Mes projets",
+    "more": "Plus sur GitHub ↗",
+    "view": "Voir",
+    "items": [
+      {
+        "title": "Analyseur syntaxique",
+        "desc": "Interpréteur d’expressions ensemblistes avec Flex et Bison : union, intersection, complément, cardinalité, copie et gestion des doublons. Analyse, exécute et affiche les résultats des expressions utilisateur."
+      },
+      {
+        "title": "Tower of Hero",
+        "desc": "Jeu de plateforme 2D en Java (Swing). Améliorez vos héros et gravissez un maximum d’étages en battant les monstres de chaque niveau."
+      },
+      {
+        "title": "Ninja Spectral",
+        "desc": "Jeu mobile Android publié sur le Play Store. Reproduction d’un niveau de Mario : traversez la carte d’une traite sans mourir pour finir le niveau."
+      }
+    ]
+  },
+  "hero": {
+    "subtitle": "Étudiant en développement web, passionné par les interfaces créatives, l’expérience utilisateur et les défis techniques. Curieux de nature, j’aime explorer de nouvelles technologies et repousser mes limites.",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "linkedinAria": "Voir mon profil LinkedIn"
+  },
+  "nav": {
+    "name": "Matthew Bonhomme",
+    "skills": "Compétences",
+    "projects": "Projets",
+    "about": "À propos",
+    "menuOpen": "Ouvrir le menu",
+    "menu": "Menu",
+    "close": "Fermer",
+    "langFrAria": "Passer le site en français",
+    "langEnAria": "Passer le site en anglais"
+  },
+  "skills": {
+    "title": "Mes compétences"
+  }
+}
